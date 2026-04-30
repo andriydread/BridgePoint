@@ -5,3 +5,4 @@ sqlalchemy>=2.0.0
 httpx
 python-dotenv
 psycopg2-binary
+tzdata

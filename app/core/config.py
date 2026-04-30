@@ -12,5 +12,8 @@ class Settings(BaseSettings):
     # Database Configuration (Placeholder)
     DATABASE_URL: str
 
+    # Timezone Configuration
+    APP_TIMEZONE: str = "UTC"
+
 
 settings = Settings()

@@ -39,7 +39,7 @@ async def notify(
         if success:
             msg_id = last_log.telegram_message_id
 
-    # If no previous message or edit failed, send new message
+    # If no previous message or edit failed, send new one
     if not success:
         success, msg_id = await send_telegram_message(payload.message)
 

@@ -1,5 +1,7 @@
 import logging
+from datetime import datetime
 from typing import Optional, Tuple
+from zoneinfo import ZoneInfo
 
 import httpx
 
@@ -8,15 +10,30 @@ from app.core.config import settings
 logger = logging.getLogger(__name__)
 
 
+def get_localized_time() -> str:
+    """Returns the current time formatted as a string based on APP_TIMEZONE."""
+    try:
+        tz = ZoneInfo(settings.APP_TIMEZONE)
+    except Exception:
+        tz = ZoneInfo("UTC")
+
+    local_now = datetime.now(tz)
+    return local_now.strftime("%d %b, %H:%M")
+
+
 async def send_telegram_message(message: str) -> Tuple[bool, Optional[int]]:
     """
     Sends a new message to the configured Telegram chat
     Returns (success, message_id)
     """
     url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
+
+    timestamp = get_localized_time()
+    formatted_message = f"<b>Last Update: {timestamp}</b>\n\n{message}"
+
     payload = {
         "chat_id": settings.TELEGRAM_CHAT_ID,
-        "text": message,
+        "text": formatted_message,
         "parse_mode": "HTML",
     }
 
@@ -40,10 +57,14 @@ async def edit_telegram_message(message_id: int, new_text: str) -> bool:
     Updates an existing message in the Telegram chat
     """
     url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/editMessageText"
+
+    timestamp = get_localized_time()
+    formatted_message = f"<b>Last Update: {timestamp}</b>\n\n{new_text}"
+
     payload = {
         "chat_id": settings.TELEGRAM_CHAT_ID,
         "message_id": message_id,
-        "text": new_text,
+        "text": formatted_message,
         "parse_mode": "HTML",
     }
 
