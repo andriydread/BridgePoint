@@ -1,4 +1,10 @@
 from pydantic import BaseModel, Field
 
+
 class NotificationPayload(BaseModel):
-    message: str = Field(..., min_length=1, max_length=4096, description="The message to send via Telegram")
+    message: str = Field(
+        ...,
+        min_length=1,
+        max_length=4096,
+        description="The message to send via Telegram",
+    )

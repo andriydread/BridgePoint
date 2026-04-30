@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     TELEGRAM_CHAT_ID: str
 
     # Database Configuration (Placeholder)
-    DATABASE_URL: str = "postgresql://user:pass@localhost:5432/bridgepoint"
+    DATABASE_URL: str
 
 
 settings = Settings()
